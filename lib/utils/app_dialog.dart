@@ -1,5 +1,6 @@
 import 'package:anjastore/config/app_route.dart';
 import 'package:anjastore/src/controllers/customer_controller.dart';
+import 'package:anjastore/src/controllers/expense_controller.dart';
 import 'package:anjastore/src/controllers/product_controller.dart';
 import 'package:anjastore/src/models/model.dart';
 import 'package:anjastore/utils/utils.dart';
@@ -429,6 +430,254 @@ class AppDialog {
                                 pC.updateProduct(oldProduct.id);
                               }
                             },
+                            child: AppText.labelBold(
+                              "SIMPAN",
+                              14,
+                              Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static dialogAddExpense({
+    ExpenseM? oldExpense,
+  }) {
+    final eC = Get.find<ExpenseController>();
+    final size = MediaQuery.of(navigatorKey.currentContext!).size;
+    return showDialog(
+      context: navigatorKey.currentContext!,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        title: AppTextNormal.labelBold(
+          "Tambah Pengeluaran",
+          16,
+          Colors.black,
+        ),
+        content: SizedBox(
+          width: size.width / 3,
+          child: Form(
+            key: eC.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppText.labelW700(
+                  "Catatan",
+                  14,
+                  Colors.black,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  controller: eC.tcNote,
+                  validator: (val) => AppValidator.requiredField(val!),
+                  style: GoogleFonts.poppins(
+                    height: 1.4,
+                  ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 14,
+                      wordSpacing: 4,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AppText.labelW700(
+                  "Nominal",
+                  14,
+                  Colors.black,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  controller: eC.tcNominal,
+                  validator: (val) => AppValidator.requiredField(val!),
+                  style: GoogleFonts.poppins(
+                    height: 1.4,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CurrencyInputFormatter(),
+                  ],
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 14,
+                      wordSpacing: 4,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AppText.labelW700(
+                  "Bukti",
+                  14,
+                  Colors.black,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  controller: eC.tcImage,
+                  validator: (val) => AppValidator.requiredField(val!),
+                  style: GoogleFonts.poppins(
+                    height: 1.4,
+                  ),
+                  readOnly: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 14),
+                      child: OutlinedButton(
+                        onPressed: () async => await eC.chooseFile(),
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        child: AppTextNormal.labelBold(
+                          "Pilih",
+                          14,
+                          colorPrimaryDark,
+                        ),
+                      ),
+                    ),
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 14,
+                      wordSpacing: 4,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AppText.labelW700(
+                  "Tanggal",
+                  14,
+                  Colors.black,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  controller: eC.tcDate,
+                  validator: (val) => AppValidator.requiredField(val!),
+                  style: GoogleFonts.poppins(
+                    height: 1.4,
+                  ),
+                  onTap: () async => eC.chooseDate(),
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 14,
+                      wordSpacing: 4,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey.shade400,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                )),
+                            onPressed: () {
+                              context.pop();
+                              eC.clearTextEditing();
+                            },
+                            child: AppText.labelBold(
+                              "BATAL",
+                              14,
+                              Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 18,
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colorPrimaryDark,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            ),
+                            onPressed: () => eC.addExpense(),
                             child: AppText.labelBold(
                               "SIMPAN",
                               14,

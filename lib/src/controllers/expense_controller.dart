@@ -1,8 +1,10 @@
 import 'package:anjastore/src/models/model.dart';
 import 'package:anjastore/src/repositories/repository.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../config/app_route.dart';
@@ -15,7 +17,11 @@ class ExpenseController extends GetxController {
 
   final RxList<ExpenseM> expensesSearch = <ExpenseM>[].obs;
 
+  final Rx<String> tempId = "".obs;
+
   final Rx<int> page = 1.obs;
+
+  final Rx<String> imageShowing = "".obs;
 
   final formKey = GlobalKey<FormState>();
 
@@ -25,7 +31,13 @@ class ExpenseController extends GetxController {
 
   final tcNominal = TextEditingController();
 
+  final tcDate = TextEditingController();
+
   final tcImage = TextEditingController();
+
+  FilePickerResult? selectedFile;
+
+  DateTime? dateExpense;
 
   @override
   void onInit() {
@@ -41,6 +53,7 @@ class ExpenseController extends GetxController {
     tcNote.dispose();
     tcImage.dispose();
     tcNominal.dispose();
+    tcDate.dispose();
     super.onClose();
   }
 
@@ -49,6 +62,9 @@ class ExpenseController extends GetxController {
     tcNote.clear();
     tcImage.clear();
     tcNominal.clear();
+    tcDate.clear();
+    tempId.value = "";
+    selectedFile = null;
   }
 
   Future getExpenses() async {
@@ -63,7 +79,7 @@ class ExpenseController extends GetxController {
         DateTime.parse(b.created).compareTo(DateTime.parse(a.created)));
   }
 
-  void onSearchProducts(String query) {
+  void onSearchExpense(String query) {
     double pageTemp = 0;
     List<ExpenseM> expensesTemp = [];
     if (query.isEmpty) {
@@ -94,28 +110,49 @@ class ExpenseController extends GetxController {
   }
 
   void addExpense() async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() && selectedFile != null) {
+      tempId.value = const Uuid().v4();
       navigatorKey.currentContext!.pop();
-      final body = {
-        "id": const Uuid().v4(),
-        "note": tcNote.text,
-        "image": tcImage.text,
-        "expense": tcNominal.text,
-        "created": DateTime.now().toIso8601String(),
-        "updated": DateTime.now().toIso8601String(),
-      };
+      await expenseRepository.uploadImage(selectedFile!, tempId.value).then(
+        (urlImage) async {
+          if (urlImage == null) {
+            ScaffoldMessenger.of(navigatorKey.currentContext!)
+                .showSnackBar(SnackBar(
+              width: 350,
+              behavior: SnackBarBehavior.floating,
+              content: AppTextNormal.labelW600(
+                  "Gagal upload foto...", 16, Colors.white),
+            ));
+          } else {
+            final body = {
+              "id": tempId.value,
+              "note": tcNote.text,
+              "image": urlImage,
+              "expense": AppCurrency.rupiahToNumber(tcNominal.text),
+              "created": DateTime.now().toIso8601String(),
+              "updated": DateTime.now().toIso8601String(),
+            };
 
-      final response = await expenseRepository.addExpense(body);
-      if (response == null) {
-        clearTextEditing();
-        getExpenses();
-      }
-      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(SnackBar(
-        width: 350,
-        behavior: SnackBarBehavior.floating,
-        content: AppTextNormal.labelW600(
-            response ?? "Pengeluaran berhasil ditambahkan", 16, Colors.white),
-      ));
+            final response = await expenseRepository.addExpense(body);
+            ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+              SnackBar(
+                width: 350,
+                behavior: SnackBarBehavior.floating,
+                content: AppTextNormal.labelW600(
+                    response ?? "Pengeluaran berhasil ditambahkan",
+                    16,
+                    Colors.white),
+              ),
+            );
+            if (response == null) {
+              clearTextEditing();
+              getExpenses();
+            } else {
+              expenseRepository.deleteImage(tempId.value);
+            }
+          }
+        },
+      );
     }
   }
 
@@ -156,5 +193,40 @@ class ExpenseController extends GetxController {
       content: AppTextNormal.labelW600(
           response ?? "Pengeluaran berhasil dihapus", 16, Colors.white),
     ));
+  }
+
+  Future chooseFile() async {
+    var picked = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      onFileLoading: (FilePickerStatus status) => debugPrint(status.name),
+      allowedExtensions: ["jpg", "png", "jpeg", "webp"],
+    );
+
+    if (picked != null) {
+      selectedFile = picked;
+      tcImage.text = picked.files.first.name;
+    }
+  }
+
+  Future chooseDate() async {
+    final date = await showDatePicker(
+        context: navigatorKey.currentContext!,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now().add(const Duration(days: -365)),
+        lastDate: DateTime.now().add(const Duration(days: 365)));
+    if (date != null) {
+      final selectedTime = await showTimePicker(
+        context: navigatorKey.currentContext!,
+        initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+      );
+
+      if (selectedTime != null) {
+        dateExpense = DateTime(date.year, date.month, date.day,
+            selectedTime.hour, selectedTime.minute);
+        tcDate.text =
+            "${DateFormat.yMMMd('id').add_jm().format(dateExpense!)} WIB";
+      }
+    }
   }
 }
