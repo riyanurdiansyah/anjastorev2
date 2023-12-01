@@ -1,6 +1,6 @@
-import '../src/models/user_m.dart';
+import 'package:anjastore/src/models/model.dart';
 
-final userEmpty = UserM(
+const userEmpty = UserM(
   email: "",
   id: "",
   role: 99,
@@ -8,4 +8,22 @@ final userEmpty = UserM(
   page: 0,
   created: "",
   updated: "",
+);
+
+const customerEmpty = CustomerM(
+  address: "",
+  email: "",
+  id: "",
+  hp: "",
+  name: "",
+  page: 0,
+);
+
+const productEmpty = ProductM(
+  name: "",
+  code: "",
+  id: "",
+  created: "",
+  updated: "",
+  page: 0,
 );

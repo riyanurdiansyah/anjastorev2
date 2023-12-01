@@ -107,6 +107,8 @@ class ExpenseController extends GetxController {
     tcNote.text = oldExpense.note;
     tcImage.text = oldExpense.image;
     tcNominal.text = oldExpense.expense.toString();
+    dateExpense = DateTime.parse(oldExpense.created);
+    tcDate.text = "${DateFormat.yMMMd('id').add_jm().format(dateExpense!)} WIB";
   }
 
   void addExpense() async {
@@ -157,27 +159,50 @@ class ExpenseController extends GetxController {
   }
 
   void updateExpense(String id) async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() && selectedFile != null) {
       navigatorKey.currentContext!.pop();
-      final body = {
-        "id": id,
-        "note": tcNote.text,
-        "image": tcImage.text,
-        "expense": tcNominal.text,
-        "updated": DateTime.now().toIso8601String(),
-      };
+      await expenseRepository.uploadImage(selectedFile!, id).then(
+        (urlImage) async {
+          if (urlImage == null) {
+            ScaffoldMessenger.of(navigatorKey.currentContext!)
+                .showSnackBar(SnackBar(
+              width: 350,
+              behavior: SnackBarBehavior.floating,
+              content: AppTextNormal.labelW600(
+                  "Gagal upload foto...", 16, Colors.white),
+            ));
+          } else {
+            final body = {
+              "id": id,
+              "note": tcNote.text,
+              "image": urlImage,
+              "expense": AppCurrency.rupiahToNumber(tcNominal.text),
+              "updated": DateTime.now().toIso8601String(),
+            };
 
-      final response = await expenseRepository.updateExpense(body);
-      if (response == null) {
-        clearTextEditing();
-        getExpenses();
-      }
-      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(SnackBar(
-        width: 350,
-        behavior: SnackBarBehavior.floating,
-        content: AppTextNormal.labelW600(
-            response ?? "Pengeluaran berhasil diubah", 16, Colors.white),
-      ));
+            final response = await expenseRepository.updateExpense(body);
+            if (imageShowing.isNotEmpty) {
+              imageShowing.value = urlImage;
+            }
+            ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+              SnackBar(
+                width: 350,
+                behavior: SnackBarBehavior.floating,
+                content: AppTextNormal.labelW600(
+                    response ?? "Pengeluaran berhasil diubah",
+                    16,
+                    Colors.white),
+              ),
+            );
+            if (response == null) {
+              clearTextEditing();
+              getExpenses();
+            } else {
+              expenseRepository.deleteImage(tempId.value);
+            }
+          }
+        },
+      );
     }
   }
 

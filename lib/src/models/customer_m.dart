@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 CustomerM customerMFromJson(String str) => CustomerM.fromJson(json.decode(str));
 
 String customerMToJson(CustomerM data) => json.encode(data.toJson());
@@ -7,7 +9,7 @@ String customerMToJson(CustomerM data) => json.encode(data.toJson());
 List<CustomerM> customersMFromJson(String str) =>
     List<CustomerM>.from(json.decode(str).map((x) => CustomerM.fromJson(x)));
 
-class CustomerM {
+class CustomerM extends Equatable {
   final String address;
   final String email;
   final String id;
@@ -15,7 +17,7 @@ class CustomerM {
   final String name;
   final int page;
 
-  CustomerM({
+  const CustomerM({
     required this.address,
     required this.email,
     required this.id,
@@ -57,4 +59,7 @@ class CustomerM {
         "hp": hp,
         "name": name,
       };
+
+  @override
+  List<Object?> get props => [address, email, id, hp, name];
 }

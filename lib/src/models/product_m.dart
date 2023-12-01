@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 ProductM productMFromJson(String str) => ProductM.fromJson(json.decode(str));
 
 String productMToJson(ProductM data) => json.encode(data.toJson());
 
-class ProductM {
+class ProductM extends Equatable {
   final String name;
   final String code;
   final String id;
@@ -12,7 +14,7 @@ class ProductM {
   final String updated;
   final int page;
 
-  ProductM({
+  const ProductM({
     required this.name,
     required this.code,
     required this.id,
@@ -54,4 +56,7 @@ class ProductM {
         "created": created,
         "updated": updated,
       };
+
+  @override
+  List<Object?> get props => [name, code, id, created, updated];
 }

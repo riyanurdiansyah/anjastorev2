@@ -14,4 +14,8 @@ abstract class AppRouteName {
   static const String products = "products";
 
   static const String expenses = "expenses";
+
+  static const String invoices = "invoices";
+
+  static const String invoicesDetail = "invoicesDetail";
 }

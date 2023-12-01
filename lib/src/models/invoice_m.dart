@@ -8,7 +8,6 @@ String invoiceMToJson(InvoiceM data) => json.encode(data.toJson());
 
 class InvoiceM {
   final int dp;
-  final String emailCustomer;
   final String id;
   final String idCustomer;
   final int no;
@@ -18,10 +17,10 @@ class InvoiceM {
   final String tanggalTerima;
   final int totalHarga;
   final List<InvoiceItemM> items;
+  final int page;
 
   InvoiceM({
     required this.dp,
-    required this.emailCustomer,
     required this.id,
     required this.idCustomer,
     required this.no,
@@ -31,11 +30,11 @@ class InvoiceM {
     required this.tanggalTerima,
     required this.totalHarga,
     required this.items,
+    required this.page,
   });
 
   InvoiceM copyWith({
     int? dp,
-    String? emailCustomer,
     String? id,
     String? idCustomer,
     int? no,
@@ -45,10 +44,10 @@ class InvoiceM {
     String? tanggalTerima,
     int? totalHarga,
     List<InvoiceItemM>? items,
+    int? page,
   }) =>
       InvoiceM(
         dp: dp ?? this.dp,
-        emailCustomer: emailCustomer ?? this.emailCustomer,
         id: id ?? this.id,
         idCustomer: idCustomer ?? this.idCustomer,
         no: no ?? this.no,
@@ -58,11 +57,11 @@ class InvoiceM {
         tanggalTerima: tanggalTerima ?? this.tanggalTerima,
         totalHarga: totalHarga ?? this.totalHarga,
         items: items ?? this.items,
+        page: page ?? this.page,
       );
 
   factory InvoiceM.fromJson(Map<String, dynamic> json) => InvoiceM(
         dp: json["dp"],
-        emailCustomer: json["email_customer"],
         id: json["id"],
         idCustomer: json["id_customer"],
         no: json["no"],
@@ -73,11 +72,11 @@ class InvoiceM {
         totalHarga: json["total_harga"],
         items: List<InvoiceItemM>.from(
             json["items"].map((x) => InvoiceItemM.fromJson(x))),
+        page: json["page"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
         "dp": dp,
-        "email_customer": emailCustomer,
         "id": id,
         "id_customer": idCustomer,
         "no": no,

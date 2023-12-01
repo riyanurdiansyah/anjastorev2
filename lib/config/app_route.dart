@@ -1,13 +1,9 @@
-import 'package:anjastore/src/controllers/customer_controller.dart';
-import 'package:anjastore/src/controllers/dashboard_controller.dart';
-import 'package:anjastore/src/controllers/expense_controller.dart';
-import 'package:anjastore/src/controllers/product_controller.dart';
-import 'package:anjastore/src/controllers/profile_controller.dart';
 import 'package:anjastore/src/repositories/session_repository.dart';
 import 'package:anjastore/src/views/web/web_customer_page.dart';
 import 'package:anjastore/src/views/web/web_dashboard_page.dart';
 import 'package:anjastore/src/views/web/web_expense_page.dart';
 import 'package:anjastore/src/views/web/web_home_page.dart';
+import 'package:anjastore/src/views/web/web_invoice_page.dart';
 import 'package:anjastore/src/views/web/web_product_page.dart';
 import 'package:anjastore/src/views/web/web_profile_page.dart';
 import 'package:anjastore/src/views/web/web_signin_page.dart';
@@ -15,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../src/controllers/controller.dart';
 import '../src/controllers/home_controller.dart';
 import 'app_route_name.dart';
 
@@ -130,6 +127,18 @@ GoRouter router = GoRouter(
                 return NoTransitionPage(child: WebExpensePage());
               },
             ),
+            GoRoute(
+              path: AppRouteName.invoices,
+              name: AppRouteName.invoices,
+              onExit: (context) {
+                Get.delete<InvoiceController>();
+                return true;
+              },
+              pageBuilder: (context, state) {
+                Get.put(InvoiceController());
+                return NoTransitionPage(child: WebInvoicePage());
+              },
+            ),
           ],
         ),
       ],
@@ -146,6 +155,18 @@ GoRouter router = GoRouter(
       name: AppRouteName.signin,
       builder: (context, state) {
         return WebSigninPage();
+      },
+    ),
+    GoRoute(
+      path: '/invoices/:id',
+      name: AppRouteName.invoicesDetail,
+      onExit: (context) {
+        Get.delete<InvoiceController>();
+        return true;
+      },
+      pageBuilder: (context, state) {
+        Get.put(InvoiceController());
+        return NoTransitionPage(child: WebInvoicePage());
       },
     ),
   ],
