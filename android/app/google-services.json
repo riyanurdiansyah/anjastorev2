@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "387491281859",
+    "project_id": "anjastore-d5989",
+    "storage_bucket": "anjastore-d5989.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387491281859:android:7c5cd7491c724c2bc45b76",
+        "android_client_info": {
+          "package_name": "com.anjastore.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387491281859-a3rckq5m2onasr1a7honn22vmkvt1k12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ9sRoS5_9nckOvSynLcwNPYvjrGPevBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387491281859-a3rckq5m2onasr1a7honn22vmkvt1k12.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "387491281859-pqa6e8nnvgfl0iu2pqpg0rp9jdrlum9n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.anjastore"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387491281859:android:f5a4f0c3e0799088c45b76",
+        "android_client_info": {
+          "package_name": "com.example.anjastore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387491281859-a3rckq5m2onasr1a7honn22vmkvt1k12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ9sRoS5_9nckOvSynLcwNPYvjrGPevBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387491281859-a3rckq5m2onasr1a7honn22vmkvt1k12.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "387491281859-pqa6e8nnvgfl0iu2pqpg0rp9jdrlum9n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.anjastore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
