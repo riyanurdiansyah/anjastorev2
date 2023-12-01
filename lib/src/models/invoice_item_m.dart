@@ -1,4 +1,6 @@
-class InvoiceItemM {
+import 'package:equatable/equatable.dart';
+
+class InvoiceItemM extends Equatable {
   final String idProduk;
   final String deskripsi;
   final int jumlahHarga;
@@ -6,7 +8,7 @@ class InvoiceItemM {
   final int qty;
   final int satuanHarga;
 
-  InvoiceItemM({
+  const InvoiceItemM({
     required this.idProduk,
     required this.deskripsi,
     required this.jumlahHarga,
@@ -49,4 +51,14 @@ class InvoiceItemM {
         "qty": qty,
         "satuan_harga": satuanHarga,
       };
+
+  @override
+  List<Object?> get props => [
+        idProduk,
+        deskripsi,
+        jumlahHarga,
+        namaProduk,
+        qty,
+        satuanHarga,
+      ];
 }

@@ -27,3 +27,17 @@ const productEmpty = ProductM(
   updated: "",
   page: 0,
 );
+
+const invoiceEmpty = InvoiceM(
+  dp: 0,
+  id: "",
+  idCustomer: "",
+  no: 0,
+  noInvoice: "",
+  sisaTagihan: 0,
+  jatuhTempo: "",
+  tanggalTerima: "",
+  totalHarga: 0,
+  items: [],
+  page: 0,
+);

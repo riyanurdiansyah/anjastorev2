@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:anjastore/src/models/invoice_item_m.dart';
+import 'package:equatable/equatable.dart';
 
 InvoiceM invoiceMFromJson(String str) => InvoiceM.fromJson(json.decode(str));
 
 String invoiceMToJson(InvoiceM data) => json.encode(data.toJson());
 
-class InvoiceM {
+class InvoiceM extends Equatable {
   final int dp;
   final String id;
   final String idCustomer;
@@ -19,7 +20,7 @@ class InvoiceM {
   final List<InvoiceItemM> items;
   final int page;
 
-  InvoiceM({
+  const InvoiceM({
     required this.dp,
     required this.id,
     required this.idCustomer,
@@ -87,4 +88,19 @@ class InvoiceM {
         "total_harga": totalHarga,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
       };
+
+  @override
+  List<Object?> get props => [
+        dp,
+        id,
+        idCustomer,
+        no,
+        noInvoice,
+        sisaTagihan,
+        jatuhTempo,
+        tanggalTerima,
+        totalHarga,
+        items,
+        page,
+      ];
 }

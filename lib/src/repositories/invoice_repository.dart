@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 abstract class InvoiceRepository {
   Future<List<InvoiceM>> getInvoices();
 
+  Future<InvoiceM?> getInvoicesById(String id);
+
   Future<String?> addInvoice(Map<String, dynamic> body);
 
   Future<String?> updateInvoice(Map<String, dynamic> body);
@@ -61,6 +63,20 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
     } catch (e) {
       debugPrint("ERROR UPDATE INVOICE : ${e.toString()}");
       return e.toString();
+    }
+  }
+
+  @override
+  Future<InvoiceM?> getInvoicesById(String id) async {
+    try {
+      final response = await invoiceCollection.doc(id).get();
+      if (response.exists) {
+        return InvoiceM.fromJson(response.data()!);
+      }
+      return null;
+    } catch (e) {
+      debugPrint("ERROR UPDATE INVOICE : ${e.toString()}");
+      return null;
     }
   }
 }
