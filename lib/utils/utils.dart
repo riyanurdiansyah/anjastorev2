@@ -9,3 +9,4 @@ export 'app_text.dart';
 export 'app_validator.dart';
 export 'app_text_format.dart';
 export 'app_currency.dart';
+export 'app_extension.dart';

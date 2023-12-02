@@ -1,9 +1,13 @@
+import 'package:anjastore/config/app_route_name.dart';
 import 'package:anjastore/src/controllers/controller.dart';
 import 'package:anjastore/src/models/model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/utils.dart';
 import 'widgets/custom_pagination.dart';
@@ -244,7 +248,15 @@ class WebInvoicePage extends StatelessWidget {
                                 width: 25,
                                 height: 25,
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    if (kDebugMode) {
+                                      launchUrl(Uri.parse(
+                                          'http://localhost:57264/#/invoice/${invoices[i].kodeInvoice}'));
+                                    } else {
+                                      launchUrl(Uri.parse(
+                                          'https://anjastore.vercel.app/#/invoice/${invoices[i].kodeInvoice}'));
+                                    }
+                                  },
                                   child: const Icon(
                                     Icons.double_arrow_rounded,
                                     color: colorPrimaryDark,
@@ -288,7 +300,7 @@ class WebInvoicePage extends StatelessWidget {
                       ),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
-                        hintText: "Cari customer disini..",
+                        hintText: "Cari invoice disini..",
                         fillColor: Colors.white,
                         filled: true,
                         hintStyle: GoogleFonts.poppins(

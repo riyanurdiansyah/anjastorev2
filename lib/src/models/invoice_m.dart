@@ -16,6 +16,7 @@ class InvoiceM extends Equatable {
   final int sisaTagihan;
   final String jatuhTempo;
   final String tanggalTerima;
+  final String kodeInvoice;
   final int totalHarga;
   final List<InvoiceItemM> items;
   final int page;
@@ -29,6 +30,7 @@ class InvoiceM extends Equatable {
     required this.sisaTagihan,
     required this.jatuhTempo,
     required this.tanggalTerima,
+    required this.kodeInvoice,
     required this.totalHarga,
     required this.items,
     required this.page,
@@ -43,6 +45,7 @@ class InvoiceM extends Equatable {
     int? sisaTagihan,
     String? jatuhTempo,
     String? tanggalTerima,
+    String? kodeInvoice,
     int? totalHarga,
     List<InvoiceItemM>? items,
     int? page,
@@ -56,6 +59,7 @@ class InvoiceM extends Equatable {
         sisaTagihan: sisaTagihan ?? this.sisaTagihan,
         jatuhTempo: jatuhTempo ?? this.jatuhTempo,
         tanggalTerima: tanggalTerima ?? this.tanggalTerima,
+        kodeInvoice: kodeInvoice ?? this.kodeInvoice,
         totalHarga: totalHarga ?? this.totalHarga,
         items: items ?? this.items,
         page: page ?? this.page,
@@ -70,6 +74,7 @@ class InvoiceM extends Equatable {
         sisaTagihan: json["sisa_tagihan"],
         jatuhTempo: json["jatuh_tempo"],
         tanggalTerima: json["tanggal_terima"],
+        kodeInvoice: json["kode_invoice"],
         totalHarga: json["total_harga"],
         items: List<InvoiceItemM>.from(
             json["items"].map((x) => InvoiceItemM.fromJson(x))),

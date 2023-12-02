@@ -69,13 +69,20 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
   @override
   Future<InvoiceM?> getInvoicesById(String id) async {
     try {
-      final response = await invoiceCollection.doc(id).get();
-      if (response.exists) {
-        return InvoiceM.fromJson(response.data()!);
+      final response =
+          await invoiceCollection.where("kode_invoice", isEqualTo: id).get();
+      if (response.docs.isNotEmpty) {
+        return InvoiceM.fromJson(response.docs.first.data());
+      } else {
+        final response2 =
+            await invoiceCollection.where("no_invoice", isEqualTo: id).get();
+        if (response2.docs.isNotEmpty) {
+          return InvoiceM.fromJson(response2.docs.first.data());
+        }
+        return null;
       }
-      return null;
     } catch (e) {
-      debugPrint("ERROR UPDATE INVOICE : ${e.toString()}");
+      debugPrint("ERROR GET INVOICE BY ID : ${e.toString()}");
       return null;
     }
   }

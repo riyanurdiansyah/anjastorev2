@@ -40,4 +40,5 @@ const invoiceEmpty = InvoiceM(
   totalHarga: 0,
   items: [],
   page: 0,
+  kodeInvoice: "",
 );

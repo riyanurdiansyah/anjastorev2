@@ -1,8 +1,10 @@
+import 'package:anjastore/src/controllers/invoice_detail_controller.dart';
 import 'package:anjastore/src/repositories/session_repository.dart';
 import 'package:anjastore/src/views/web/web_customer_page.dart';
 import 'package:anjastore/src/views/web/web_dashboard_page.dart';
 import 'package:anjastore/src/views/web/web_expense_page.dart';
 import 'package:anjastore/src/views/web/web_home_page.dart';
+import 'package:anjastore/src/views/web/web_invoice_detail_page.dart';
 import 'package:anjastore/src/views/web/web_invoice_page.dart';
 import 'package:anjastore/src/views/web/web_product_page.dart';
 import 'package:anjastore/src/views/web/web_profile_page.dart';
@@ -158,15 +160,16 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/invoices/:id',
+      path: '/invoice/:id',
       name: AppRouteName.invoicesDetail,
       onExit: (context) {
-        Get.delete<InvoiceController>();
+        Get.delete<InvoiceDetailController>();
         return true;
       },
       pageBuilder: (context, state) {
-        Get.put(InvoiceController());
-        return NoTransitionPage(child: WebInvoicePage());
+        String id = state.pathParameters["id"] ?? "";
+        Get.put(InvoiceDetailController()).invoiceId.value = id;
+        return NoTransitionPage(child: WebInvoiceDetailPage());
       },
     ),
   ],
